@@ -14,6 +14,7 @@ function ShoppingCart() {
       price: 20000,
       desc: "To download drivers, firmware updates, BIOS, and software",
       img: img1,
+      isStock: true,
     },
     {
       id: 2,
@@ -21,6 +22,7 @@ function ShoppingCart() {
       price: 150000,
       desc: "To download drivers, firmware updates, BIOS, and software",
       img: img2,
+      isStock: false,
     },
     {
       id: 3,
@@ -28,6 +30,7 @@ function ShoppingCart() {
       price: 45000,
       desc: "To download drivers, firmware updates, BIOS, and software",
       img: img3,
+      isStock: true,
     },
     {
       id: 4,
@@ -35,6 +38,7 @@ function ShoppingCart() {
       price: 12000,
       desc: "To download drivers, firmware updates, BIOS, and software",
       img: img1,
+      isStock: true,
     },
     {
       id: 5,
@@ -42,6 +46,7 @@ function ShoppingCart() {
       price: 25000,
       desc: "To download drivers, firmware updates, BIOS, and software",
       img: img2,
+      isStock: false,
     },
     {
       id: 6,
@@ -49,23 +54,29 @@ function ShoppingCart() {
       price: 30000,
       desc: "To download drivers, firmware updates, BIOS, and software",
       img: img3,
+      isStock: true,
     },
   ];
 
   const [cartItems, setCartItems] = useState([]);
+  const [total, setTotal] = useState(0);
 
   const handleAddToCart = (product) => {
     setCartItems([...cartItems, product])
+    setTotal(total + product.price);
   }
 
-  console.log(cartItems);
-  
+  const handleRemoveFromCart = (item) => {
+    let filteredItems = cartItems.filter((citem) => citem.id != item.id);
+    setCartItems(filteredItems);
+    setTotal(total - item.price)
+  }
 
   return (
     <div className="container-fluid mymain">
       <div className="row">
         <div className="left_section col-10">
-          <div className="row">
+          <div className="row d-flex gap-4">
             {datas.map((item) => {
               return (
                 <ProductCard item={item} handleAddToCart={handleAddToCart} />
@@ -75,6 +86,7 @@ function ShoppingCart() {
         </div>
         <div className="right_section col-2">
           <ol class="list-group list-group-numbered">
+            <h2>Count: {cartItems.length}</h2>
             {
               cartItems.map((citem) => {
                 return (
@@ -83,13 +95,17 @@ function ShoppingCart() {
                       <div class="fw-bold">{citem.product_name}</div>
                       {citem.price}
                     </div>
-                    <span class="badge text-bg-primary rounded-pill">X</span>
+                    <button
+                      class="badge text-bg-primary rounded-pill"
+                      onClick={() => {handleRemoveFromCart(citem)}}
+                    >
+                      X
+                    </button>
                   </li>
                 );
               })
             }
-            
-            
+            <h3>Total: {total}</h3>
           </ol>
         </div>
       </div>
