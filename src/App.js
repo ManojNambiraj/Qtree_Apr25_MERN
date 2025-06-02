@@ -1,14 +1,17 @@
 import "./App.css";
-import LocalState from "./LocalState";
-import Properties from "./Properties";
-import ShoppingCart from "./ShoppingCart";
-import SPA from "./SPA";
+import CRUD from "./CRUD";
+// import LocalState from "./LocalState";
+// import Properties from "./Properties";
+// import ShoppingCart from "./ShoppingCart";
+// import SPA from "./SPA";
 
 function App() {
   return (
     <div className="App">
 
-      <ShoppingCart />
+      <CRUD />
+
+      {/* <ShoppingCart /> */}
 
       {/* <SPA /> */}
 
