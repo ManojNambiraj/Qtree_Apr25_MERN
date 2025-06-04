@@ -7,7 +7,7 @@ function CRUD() {
   return (
     <BrowserRouter>
         <Routes>
-            <Route path='/users' element={<Userlist />} />
+            <Route path='/' element={<Userlist />} />
             <Route path='/create' element={<CreateUser />} />
         </Routes>
     </BrowserRouter>
