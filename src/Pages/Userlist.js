@@ -1,24 +1,32 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Userlist() {
+  const [datas, setDatas] = useState([]);
 
-  const [datas, setDatas] = useState([])
-    
-    useEffect(() => {
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const getUsers = async () => {
+    const userData = await axios.get(
+      "https://683db832199a0039e9e69fec.mockapi.io/EMP"
+    );
+
+    setDatas(userData.data);
+  };
+
+  const handleDelete = async (id) => {
+    const deletedData = await axios.delete(
+      `https://683db832199a0039e9e69fec.mockapi.io/EMP/${id}`
+    );
+
+    if(deletedData){
       getUsers()
-    }, [])     
-
-    const getUsers = async () => {
-      const userData = await axios.get(
-        "https://683db832199a0039e9e69fec.mockapi.io/EMP"
-      );
-
-      setDatas(userData.data);
     }
+  }
 
-    // console.log("datas-->", datas);
   return (
     <div>
       <Link to={"/create"} className="btn btn-primary m-4">
@@ -34,6 +42,7 @@ function Userlist() {
             <th scope="col">Email</th>
             <th scope="col">Mobile</th>
             <th scope="col">Password</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -46,6 +55,20 @@ function Userlist() {
                 <td>{item.email}</td>
                 <td>{item.mobile}</td>
                 <td>{item.password}</td>
+                <td>
+                  <Link
+                    to={`/edit/${item.id}`}
+                    className="btn btn-success btn-sm"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => {handleDelete(item.id)}}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             );
           })}
@@ -55,4 +78,4 @@ function Userlist() {
   );
 }
 
-export default Userlist
+export default Userlist;

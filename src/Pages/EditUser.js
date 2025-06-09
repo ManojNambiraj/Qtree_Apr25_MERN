@@ -1,43 +1,54 @@
-import React, { useState } from "react";
-import "./CreateUser.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 
-function CreateUser() {
-
+function EditUser() {
   const navigate = useNavigate();
+  const { id } = useParams()
 
   const [userInput, setUserInput] = useState({
     name: "",
     email: "",
     mobile: "",
     age: "",
-    password: ""
-  })
+    password: "",
+  });
 
-  const handleChange = ({target: {name, value}}) => {
-    setUserInput({...userInput, [name]: value})
-  }  
+  useEffect(() => {
+    getData();
+  },[])
+
+  const getData = async () => {
+    const userData = await axios.get(
+      `https://683db832199a0039e9e69fec.mockapi.io/EMP/${id}`
+    );
+
+    setUserInput(userData.data);
+  }
+
+  const handleChange = ({ target: { name, value } }) => {
+    setUserInput({ ...userInput, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const {name, email, mobile, age, password} = userInput
+    const { name, email, mobile, age, password } = userInput;
 
-    const postData = await axios.post(
-      "https://683db832199a0039e9e69fec.mockapi.io/EMP",
+    const postData = await axios.put(
+      `https://683db832199a0039e9e69fec.mockapi.io/EMP/${id}`,
       { name, email, mobile, age, password }
     );
 
-    if(postData){
-      navigate("/")
+    if (postData) {
+      navigate("/");
     }
-  }
+  };
 
   return (
     <div className="form_container">
       <form onSubmit={handleSubmit}>
-        <h1 style={{ textAlign: "center" }}>User Registration</h1>
+        <h1 style={{ textAlign: "center" }}>Update User</h1>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">
             Name
@@ -49,6 +60,7 @@ function CreateUser() {
             aria-describedby="emailHelp"
             name="name"
             onChange={handleChange}
+            value={userInput.name}
             autoComplete="off"
           />
         </div>
@@ -62,6 +74,7 @@ function CreateUser() {
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             name="email"
+            value={userInput.email}
             onChange={handleChange}
             autoComplete="off"
           />
@@ -76,6 +89,7 @@ function CreateUser() {
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             name="mobile"
+            value={userInput.mobile}
             onChange={handleChange}
           />
         </div>
@@ -89,6 +103,7 @@ function CreateUser() {
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             name="age"
+            value={userInput.age}
             onChange={handleChange}
           />
         </div>
@@ -101,6 +116,7 @@ function CreateUser() {
             class="form-control"
             id="exampleInputPassword1"
             name="password"
+            value={userInput.password}
             onChange={handleChange}
           />
         </div>
@@ -112,5 +128,5 @@ function CreateUser() {
     </div>
   );
 }
-
-export default CreateUser;
+  
+export default EditUser
