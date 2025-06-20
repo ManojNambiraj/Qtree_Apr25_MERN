@@ -20,10 +20,10 @@ function EditUser() {
 
   const getData = async () => {
     const userData = await axios.get(
-      `https://683db832199a0039e9e69fec.mockapi.io/EMP/${id}`
+      `http://localhost:8080/user/user/${id}`
     );
 
-    setUserInput(userData.data);
+    setUserInput(userData.data.message);
   }
 
   const handleChange = ({ target: { name, value } }) => {
@@ -36,7 +36,7 @@ function EditUser() {
     const { name, email, mobile, age, password } = userInput;
 
     const postData = await axios.put(
-      `https://683db832199a0039e9e69fec.mockapi.io/EMP/${id}`,
+      `http://localhost:8080/user/edituser/${id}`,
       { name, email, mobile, age, password }
     );
 

@@ -10,16 +10,15 @@ function Userlist() {
   }, []);
 
   const getUsers = async () => {
-    const userData = await axios.get(
-      "https://683db832199a0039e9e69fec.mockapi.io/EMP"
-    );
+    const userData = await axios.get("http://localhost:8080/user/users");
 
-    setDatas(userData.data);
+    setDatas(userData.data.message);
+    // console.log(userData.data.message);
   };
 
   const handleDelete = async (id) => {
     const deletedData = await axios.delete(
-      `https://683db832199a0039e9e69fec.mockapi.io/EMP/${id}`
+      `http://localhost:8080/user/deleteUser/${id}`
     );
 
     if(deletedData){
@@ -41,30 +40,30 @@ function Userlist() {
             <th scope="col">Age</th>
             <th scope="col">Email</th>
             <th scope="col">Mobile</th>
-            <th scope="col">Password</th>
+            {/* <th scope="col">Password</th> */}
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {datas.map((item) => {
+          {datas.map((item, index) => {
             return (
               <tr>
-                <th scope="row">{item.id}</th>
+                <th scope="row">{index + 1}</th>
                 <td>{item.name}</td>
                 <td>{item.age}</td>
                 <td>{item.email}</td>
                 <td>{item.mobile}</td>
-                <td>{item.password}</td>
+                {/* <td>{item.password}</td> */}
                 <td>
                   <Link
-                    to={`/edit/${item.id}`}
+                    to={`/edit/${item._id}`}
                     className="btn btn-success btn-sm"
                   >
                     Edit
                   </Link>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => {handleDelete(item.id)}}
+                    onClick={() => {handleDelete(item._id)}}
                   >
                     Delete
                   </button>
